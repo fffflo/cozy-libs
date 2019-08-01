@@ -35,7 +35,7 @@ const ensureISOString = date => {
   }
 }
 
-class Transaction extends Document {
+class Transaction extends Document.originalClass {
   static getDate(transaction) {
     return transaction
   }

@@ -2,7 +2,7 @@ const Document = require('./Document')
 
 const ACCOUNTS_DOCTYPE = 'io.cozy.accounts'
 
-class Account extends Document {}
+class Account extends Document.originalClass {}
 
 Account.schema = {
   doctype: ACCOUNTS_DOCTYPE,

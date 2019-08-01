@@ -1,8 +1,17 @@
 const Document = require('../Document')
 const BankAccount = require('./BankAccount')
+const exportInstanceAndClass = require('../utils').exportInstanceAndClass
 
-class BalanceHistory extends Document {
-  static async getByYearAndAccount(year, accountId) {
+class BalanceHistory extends Document.originalClass {
+  constructor () {
+    super()
+    this.doctype = 'io.cozy.bank.balancehistories'
+    this.idAttributes = ['year', 'relationships.account.data._id']
+    this.version = 1
+    this.checkedAttributes = ['balances']
+  }
+
+  async getByYearAndAccount(year, accountId) {
     const index = await Document.getIndex(this.doctype, this.idAttributes)
     const options = {
       selector: { year, 'relationships.account.data._id': accountId },
@@ -17,7 +26,7 @@ class BalanceHistory extends Document {
     return this.getEmptyDocument(year, accountId)
   }
 
-  static getEmptyDocument(year, accountId) {
+  getEmptyDocument(year, accountId) {
     return {
       year,
       balances: {},
@@ -36,9 +45,4 @@ class BalanceHistory extends Document {
   }
 }
 
-BalanceHistory.doctype = 'io.cozy.bank.balancehistories'
-BalanceHistory.idAttributes = ['year', 'relationships.account.data._id']
-BalanceHistory.version = 1
-BalanceHistory.checkedAttributes = ['balances']
-
-module.exports = BalanceHistory
+module.exports = exportInstanceAndClass(BalanceHistory)

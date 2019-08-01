@@ -2,7 +2,7 @@ const PropTypes = require('prop-types')
 
 const Document = require('../Document')
 
-class Group extends Document {}
+class Group extends Document.originalClass {}
 
 const GroupShape = PropTypes.shape({
   _id: PropTypes.string.isRequired,

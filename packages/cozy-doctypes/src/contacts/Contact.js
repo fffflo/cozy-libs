@@ -13,7 +13,7 @@ const getPrimaryOrFirst = property => obj => {
  * Class representing the contact model.
  * @extends Document
  */
-class Contact extends Document {
+class Contact extends Document.originalClass {
   /**
    * Returns true if candidate is a contact
    *

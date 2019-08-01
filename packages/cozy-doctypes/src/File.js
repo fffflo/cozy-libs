@@ -1,6 +1,7 @@
 const trimEnd = require('lodash/trimEnd')
 
 const Document = require('./Document')
+const exportInstanceAndClass = require('./utils').exportInstanceAndClass
 
 const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
 
@@ -8,7 +9,11 @@ const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
  * Class representing the file model.
  * @extends Document
  */
-class CozyFile extends Document {
+class CozyFile extends Document.originalClass {
+  constructor () {
+    super()
+    this.doctype = 'io.cozy.files'
+  }
   /**
    * async getFullpath - Gets a file's path
    *
@@ -16,7 +21,7 @@ class CozyFile extends Document {
    * @param  {string} name   The file's name
    * @return {string}        The full path of the file in the cozy
    **/
-  static async getFullpath(dirId, name) {
+  async getFullpath(dirId, name) {
     if (!dirId) {
       throw new Error('You must provide a dirId')
     }
@@ -37,7 +42,7 @@ class CozyFile extends Document {
    * @returns {Promise}                     - A promise that returns the move action response and the deleted file id (if any) if resolved or an Error if rejected
    *
    */
-  static async move(fileId, destination, force = false) {
+  async move(fileId, destination, force = false) {
     const { folderId, path } = destination
     const filesCollection = this.cozyClient.collection('io.cozy.files')
     try {
@@ -80,7 +85,7 @@ class CozyFile extends Document {
    * @param {Object} file An io.cozy.files
    * @return {Object}  return an object with {filename: , extension: }
    */
-  static splitFilename(file) {
+  splitFilename(file) {
     if (!file.name) throw new Error('file should have a name property ')
 
     if (file.type === 'file') {
@@ -99,7 +104,7 @@ class CozyFile extends Document {
    * @param {Object} file HTML Object file
    * @param {Object} metadata An object containing the wanted metadata to attach
    */
-  static async overrideFileForPath(path, file, metadata) {
+  async overrideFileForPath(path, file, metadata) {
     if (!path.endsWith('/')) path = path + '/'
 
     const filesCollection = this.cozyClient.collection('io.cozy.files')
@@ -127,6 +132,4 @@ class CozyFile extends Document {
   }
 }
 
-CozyFile.doctype = 'io.cozy.files'
-
-module.exports = CozyFile
+module.exports = exportInstanceAndClass(CozyFile)

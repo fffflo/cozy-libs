@@ -19,6 +19,13 @@ const parallelMap = (iterable, fn, concurrency) => {
   return pool.start().then(() => res)
 }
 
+const exportInstanceAndClass = (Klass) => {
+  const instance = new Klass()
+  instance.originalClass = Klass
+  return instance
+}
+
 module.exports = {
-  parallelMap
+  parallelMap,
+  exportInstanceAndClass
 }

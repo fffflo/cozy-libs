@@ -1,7 +1,7 @@
 const Document = require('../Document')
 const sumBy = require('lodash/sumBy')
 
-class BankAccountStats extends Document {
+class BankAccountStats extends Document.originalClass {
   static checkCurrencies(accountsStats) {
     const currency = accountsStats[0].currency
 

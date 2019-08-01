@@ -4,7 +4,7 @@ const Document = require('../Document')
 const matching = require('./matching-accounts')
 const { getSlugFromInstitutionLabel } = require('./slug-account')
 
-class BankAccount extends Document {
+class BankAccount extends Document.originalClass {
   /**
    * Adds _id of existing accounts to fetched accounts
    */

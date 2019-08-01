@@ -4,7 +4,7 @@ const flatten = require('lodash/flatten')
 const Contact = require('../contacts/Contact')
 const Document = require('../Document')
 
-class AdministrativeProcedure extends Document {
+class AdministrativeProcedure extends Document.originalClass {
   /**
    * Returns personal data for the contact
    *

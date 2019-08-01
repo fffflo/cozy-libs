@@ -6,7 +6,7 @@ describe('Balance history', () => {
   let queryResult = []
 
   beforeAll(() => {
-    Document.registerClient(cozyClientJS)
+    BalanceHistory.registerClient(cozyClientJS)
     cozyClientJS.data.query.mockImplementation(() => {
       return Promise.resolve(queryResult)
     })
