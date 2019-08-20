@@ -9,8 +9,11 @@ import {
   TabPanel
 } from 'cozy-ui/transpiled/react/Tabs'
 import Icon from 'cozy-ui/transpiled/react/Icon'
-import { SubTitle, Text } from 'cozy-ui/transpiled/react/Text'
+import Card from 'cozy-ui/transpiled/react/Card'
+import { SubTitle, Text, Caption } from 'cozy-ui/transpiled/react/Text'
 import Button from 'cozy-ui/transpiled/react/Button'
+import Modal, { ModalHeader, ModalContent } from 'cozy-ui/transpiled/react/Modal'
+import palette from 'cozy-ui/transpiled/react/palette'
 
 import TriggerErrorInfo from '../infos/TriggerErrorInfo'
 import TriggerManager from '../TriggerManager'
@@ -24,12 +27,14 @@ class KonnectorConfiguration extends React.Component {
     super(props)
     this.state = {
       isJobRunning: false,
-      konnectorJobError: triggersModel.getError(props.trigger)
+      konnectorJobError: triggersModel.getError(props.trigger),
+      isShowingLoginConfiguration: false
     }
 
     this.handleKonnectorJobError = this.handleKonnectorJobError.bind(this)
     this.handleKonnectorJobSuccess = this.handleKonnectorJobSuccess.bind(this)
     this.handleTriggerLaunch = this.handleTriggerLaunch.bind(this)
+    this.toggleLoginConfiguration = this.toggleLoginConfiguration.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -64,6 +69,12 @@ class KonnectorConfiguration extends React.Component {
     this.props.refetchTrigger()
   }
 
+  toggleLoginConfiguration (display) {
+    this.setState({
+      isShowingLoginConfiguration: display
+    })
+  }
+
   render() {
     const {
       konnector,
@@ -73,14 +84,36 @@ class KonnectorConfiguration extends React.Component {
       addAccount,
       t
     } = this.props
-    const { isJobRunning, konnectorJobError } = this.state
+    const { isJobRunning, konnectorJobError, isShowingLoginConfiguration } = this.state
 
     const shouldDisplayError = !isJobRunning && konnectorJobError
     const hasLoginError = konnectorJobError && konnectorJobError.isLoginError()
     const hasErrorExceptLogin = konnectorJobError && !hasLoginError
 
+    if (isShowingLoginConfiguration) {
+      return (
+        <Modal dismissAction={() => this.toggleLoginConfiguration(false)}>
+          <ModalHeader>
+            Yo
+          </ModalHeader>
+          <ModalContent>
+            <TriggerManager
+              account={account}
+              konnector={konnector}
+              trigger={trigger}
+              onLaunch={this.handleTriggerLaunch}
+              onSuccess={this.handleKonnectorJobSuccess}
+              onError={this.handleKonnectorJobError}
+              running={isJobRunning}
+              showError={false}
+            />
+          </ModalContent>
+        </Modal>
+      )
+    }
+
     return (
-      <Tabs initialActiveTab={hasLoginError ? 'configuration' : 'data'}>
+      <Tabs initialActiveTab={true ? 'configuration' : 'data'}>
         <TabList>
           <Tab name="data">
             {t('modal.tabs.data')}
@@ -125,40 +158,27 @@ class KonnectorConfiguration extends React.Component {
               <SubTitle className="u-mb-half">
                 {t('modal.updateAccount.title')}
               </SubTitle>
-              <TriggerManager
-                account={account}
-                konnector={konnector}
-                trigger={trigger}
-                onLaunch={this.handleTriggerLaunch}
-                onSuccess={this.handleKonnectorJobSuccess}
-                onError={this.handleKonnectorJobError}
-                running={isJobRunning}
-                showError={false}
-              />
+              <Card className="u-flex u-flex-items-center" onClick={this.toggleLoginConfiguration}>
+                <div className="u-w-2 u-mr-1">
+                  <Icon icon="lock" color={palette['coolGrey']} size={36} />
+                </div>
+                <div className="u-flex-grow-1">
+                  ameli.fr
+                  <Caption>26876287678</Caption>
+                </div>
+                <Icon icon="right" color={palette['coolGrey']} />
+              </Card>
             </div>
-            <div className="u-mb-2">
-              <SubTitle className="u-mb-half">
-                {t('modal.deleteAccount.title')}
-              </SubTitle>
-              <Text className="u-mb-1">
-                {t('modal.deleteAccount.description')}
-              </Text>
+            <div>
               <DeleteAccountButton
                 account={account}
                 disabled={isJobRunning}
                 onSuccess={onAccountDeleted}
-                extension="full"
               />
-            </div>
-            <div>
-              <SubTitle className="u-mb-half">
-                {t('modal.addAccount.title')}
-              </SubTitle>
               <Button
                 onClick={addAccount}
                 label={t('modal.addAccount.button')}
-                extension="full"
-                theme="secondary"
+                theme="ghost"
               />
             </div>
           </TabPanel>
