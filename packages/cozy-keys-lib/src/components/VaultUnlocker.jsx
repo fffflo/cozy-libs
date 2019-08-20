@@ -1,12 +1,11 @@
 import React from 'react'
 import { VaultContext } from './VaultContext'
-
-const UnlockForm = ({ onSubmit }) => <button onClick={onSubmit}>unlock</button>
+import UnlockForm from './UnlockForm'
 
 const VaultUnlocker = ({ children }) => {
   const { client } = React.useContext(VaultContext)
   return client.isUnlocked() ? children : (
-    <UnlockForm onSubmit={() => client.unlock()} />
+    <UnlockForm />
   )
 }
 
