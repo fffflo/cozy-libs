@@ -19,12 +19,12 @@
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
-    "cozy-ui": "22.4.0",
+    "cozy-ui": "22.10.0",
     "enzyme-to-json": "3.3.5",
     "jest": "24.8.0",
     "react": "^16.8.3"
   },
   "peerDependencies": {
-    "cozy-ui": "^22.4.0"
+    "cozy-ui": "^22.10.0"
   }
 }
