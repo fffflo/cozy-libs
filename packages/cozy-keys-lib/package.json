@@ -1,0 +1,30 @@
+{
+  "name": "cozy-keys-lib",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "yarn build; yarn copy-files",
+    "watch": "env BABEL_ENV=transpilation yarn babel src/ --out-dir dist --watch",
+    "build": "env BABEL_ENV=transpilation yarn babel src/ --out-dir dist && yarn run copy-files",
+    "copy-files": "cp -rf src/locales dist/",
+    "test": "jest --verbose",
+    "lint": "cd ..; yarn lint packages/cozy-keys-lib"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.5.4",
+    "babel-preset-cozy-app": "^1.6.0",
+    "lodash": "4.17.15",
+    "prop-types": "^15.7.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.4.4",
+    "cozy-ui": "22.4.0",
+    "enzyme-to-json": "3.3.5",
+    "jest": "24.8.0",
+    "react": "^16.8.3"
+  },
+  "peerDependencies": {
+    "cozy-ui": "^22.4.0"
+  }
+}
