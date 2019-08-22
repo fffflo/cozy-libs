@@ -241,9 +241,10 @@ export class TriggerManager extends Component {
    */
   async handleSuccess(successCallback) {
     const trigger = await this.refetchTrigger()
+    const { account } = this.state
     this.setState({ status: IDLE, trigger })
     if (typeof successCallback !== 'function') return
-    successCallback(trigger)
+    successCallback(trigger, account)
   }
 
   /**
