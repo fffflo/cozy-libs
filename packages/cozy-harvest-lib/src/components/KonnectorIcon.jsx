@@ -12,7 +12,8 @@ class KonnectorIcon extends Component {
   }
 
   render() {
-    return <AppIcon fetchIcon={this.fetchIcon.bind(this)} />
+    const { client, konnector, ...otherProps } = this.props
+    return <AppIcon {...otherProps} fetchIcon={this.fetchIcon.bind(this)} />
   }
 }
 
