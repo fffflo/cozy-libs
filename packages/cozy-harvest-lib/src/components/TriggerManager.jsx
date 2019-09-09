@@ -40,11 +40,14 @@ export class TriggerManager extends Component {
     this.handleOAuthAccountId = this.handleOAuthAccountId.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleError = this.handleError.bind(this)
+    this.handleCipherSelect = this.handleCipherSelect.bind(this)
 
     this.state = {
       account,
       error: null,
-      status: IDLE
+      status: IDLE,
+      showCiphersList: true,
+      showAccountForm: false
     }
   }
 
@@ -200,6 +203,13 @@ export class TriggerManager extends Component {
     if (typeof onError === 'function') onError(error)
   }
 
+  handleCipherSelect() {
+    this.setState({
+      showCiphersList: false,
+      showAccountForm: true
+    })
+  }
+
   render() {
     const {
       error: triggerError,
@@ -208,7 +218,13 @@ export class TriggerManager extends Component {
       showError,
       modalContainerId
     } = this.props
-    const { account, error, status } = this.state
+    const {
+      account,
+      error,
+      status,
+      showCiphersList,
+      showAccountForm
+    } = this.state
     const submitting = !!(status === RUNNING || triggerRunning)
     const modalInto = modalContainerId || MODAL_PLACE_ID
 
@@ -229,7 +245,13 @@ export class TriggerManager extends Component {
       <div>
         <VaultUnlocker>
           <div id={modalInto} />
-          <VaultCiphersList konnector={konnector}>
+          {showCiphersList && (
+            <VaultCiphersList
+              konnector={konnector}
+              onSelect={this.handleCipherSelect}
+            />
+          )}
+          {showAccountForm && (
             <AccountForm
               account={account}
               error={error || triggerError}
@@ -238,7 +260,7 @@ export class TriggerManager extends Component {
               showError={showError}
               submitting={submitting}
             />
-          </VaultCiphersList>
+          )}
         </VaultUnlocker>
       </div>
     )
