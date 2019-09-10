@@ -46,8 +46,7 @@ export class TriggerManager extends Component {
       account,
       error: null,
       status: IDLE,
-      showCiphersList: true,
-      showAccountForm: false
+      step: 'ciphersList'
     }
   }
 
@@ -205,8 +204,7 @@ export class TriggerManager extends Component {
 
   handleCipherSelect() {
     this.setState({
-      showCiphersList: false,
-      showAccountForm: true
+      step: 'accountForm'
     })
   }
 
@@ -218,13 +216,7 @@ export class TriggerManager extends Component {
       showError,
       modalContainerId
     } = this.props
-    const {
-      account,
-      error,
-      status,
-      showCiphersList,
-      showAccountForm
-    } = this.state
+    const { account, error, status, step } = this.state
     const submitting = !!(status === RUNNING || triggerRunning)
     const modalInto = modalContainerId || MODAL_PLACE_ID
 
@@ -245,13 +237,14 @@ export class TriggerManager extends Component {
       <div>
         <VaultUnlocker>
           <div id={modalInto} />
-          {showCiphersList && (
+          {step === 'ciphersList' && (
             <VaultCiphersList
               konnector={konnector}
               onSelect={this.handleCipherSelect}
             />
           )}
-          {showAccountForm && (
+          {step === 'accountForm' && (
+            // TODO add a back button to go back to ciphers list
             <AccountForm
               account={account}
               error={error || triggerError}
