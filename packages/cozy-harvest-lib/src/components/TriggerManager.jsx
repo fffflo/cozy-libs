@@ -48,7 +48,8 @@ export class TriggerManager extends Component {
       account,
       error: null,
       status: IDLE,
-      step: 'ciphersList'
+      step: 'ciphersList',
+      selectedCipher: null
     }
   }
 
@@ -204,9 +205,10 @@ export class TriggerManager extends Component {
     if (typeof onError === 'function') onError(error)
   }
 
-  handleCipherSelect() {
+  handleCipherSelect(selectedCipher) {
     this.setState({
-      step: 'accountForm'
+      step: 'accountForm',
+      selectedCipher
     })
   }
 
@@ -214,6 +216,26 @@ export class TriggerManager extends Component {
     this.setState({
       step: 'ciphersList'
     })
+  }
+
+  cipherToAccount(cipher) {
+    if (!cipher) {
+      return null
+    }
+
+    const customFields = (cipher.fields || []).reduce((fields, field) => {
+      fields[field.name] = field.value
+
+      return fields
+    }, {})
+
+    return {
+      auth: {
+        ...cipher.login,
+        login: cipher.login.username,
+        ...customFields
+      }
+    }
   }
 
   render() {
@@ -224,7 +246,7 @@ export class TriggerManager extends Component {
       showError,
       modalContainerId
     } = this.props
-    const { account, error, status, step } = this.state
+    const { account, error, status, step, selectedCipher } = this.state
     const submitting = !!(status === RUNNING || triggerRunning)
     const modalInto = modalContainerId || MODAL_PLACE_ID
 
@@ -255,7 +277,7 @@ export class TriggerManager extends Component {
             <>
               <BackButton onClick={this.showCiphersList} />
               <AccountForm
-                account={account}
+                account={account || this.cipherToAccount(selectedCipher)}
                 error={error || triggerError}
                 konnector={konnector}
                 onSubmit={this.handleSubmit}
