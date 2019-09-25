@@ -19,8 +19,8 @@
     "example-server": "env USE_REACT=true parcel --port 1234 $(pwd)/examples/index.html"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.4",
+    "@babel/cli": "7.6.2",
+    "@babel/core": "7.6.2",
     "babel-plugin-css-modules-transform": "^1.6.2",
     "babel-preset-cozy-app": "^1.7.0",
     "cozy-client": "6.64.6",

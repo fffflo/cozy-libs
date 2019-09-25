@@ -39,7 +39,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.2.3",
+    "@babel/cli": "7.6.2",
     "babel-jest": "24.1.0",
     "babel-preset-cozy-app": "^1.7.0",
     "cozy-client": "6.64.6",
