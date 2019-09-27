@@ -29,9 +29,9 @@
     "word-wrap": "^1.2.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "babel-jest": "^24.1.0",
-    "babel-plugin-inline-import": "^3.0.0"
+    "@babel/cli": "7.2.3",
+    "babel-jest": "24.9.0",
+    "babel-plugin-inline-import": "3.0.0"
   },
   "jest": {
     "testPathIgnorePatterns": [
